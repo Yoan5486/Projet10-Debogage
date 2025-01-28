@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 
 import "./style.scss";
@@ -8,29 +9,39 @@ export const BUTTON_TYPES = {
 };
 
 const Button = ({ title, onClick, type, disabled, children }) => {
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleClick = (e) => {
+    setIsSubmitted(true);
+    onClick(e);
+    setTimeout(() => setIsSubmitted(false), 3000); // Réinitialise après 3 secondes
+  };
+
+  const buttonText = isSubmitted ? "Réponse envoyée" : children;
+
   switch (type) {
     case BUTTON_TYPES.DEFAULT:
       return (
         <button
           type="button"
-          disabled={disabled}
+          disabled={disabled || isSubmitted}
           className="Button"
           data-testid="button-test-id"
-          onClick={onClick}
+          onClick={handleClick}
           title={title}
         >
-          {children}
+          {buttonText}
         </button>
       );
     case BUTTON_TYPES.SUBMIT:
       return (
         <input
-          disabled={disabled}
+          disabled={disabled || isSubmitted}
           className="Button"
           type="submit"
           data-testid="button-test-id"
-          value={children}
-          onClick={onClick}
+          value={buttonText}
+          onClick={handleClick}
           title={title}
         />
       );
@@ -38,19 +49,19 @@ const Button = ({ title, onClick, type, disabled, children }) => {
       return (
         <button
           type="button"
-          disabled={disabled}
+          disabled={disabled || isSubmitted}
           className="Button"
           data-testid="button-test-id"
-          onClick={onClick}
+          onClick={handleClick}
           title={title}
         >
-          {children}
+          {buttonText}
         </button>
       );
   }
 };
 
-// eslint-disable-next-line react/no-typos
+
 Button.propTypes = {
   title: PropTypes.string,
   onClick: PropTypes.func,
