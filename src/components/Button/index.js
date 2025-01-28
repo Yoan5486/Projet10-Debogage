@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import Modal from "../../containers/Modal"
 
 import "./style.scss";
 
@@ -8,39 +9,39 @@ export const BUTTON_TYPES = {
   SUBMIT: 2,
 };
 
-const Button = ({ title, onClick, type, disabled, children }) => {
-  const [isSubmitted, setIsSubmitted] = useState(false);
-
+const ModalButton = ({ title, onClick, type, disabled, children}) => {
+  const [setIsOpened] = useState(false);
+  
   const handleClick = (e) => {
-    setIsSubmitted(true);
     onClick(e);
-    setTimeout(() => setIsSubmitted(false), 3000); // Réinitialise après 3 secondes
-  };
+    setIsOpened(true);
+   
 
-  const buttonText = isSubmitted ? "Réponse envoyée" : children;
+    
+  };
 
   switch (type) {
     case BUTTON_TYPES.DEFAULT:
       return (
         <button
           type="button"
-          disabled={disabled || isSubmitted}
+          disabled={disabled}
           className="Button"
           data-testid="button-test-id"
           onClick={handleClick}
           title={title}
         >
-          {buttonText}
+          {children}
         </button>
       );
     case BUTTON_TYPES.SUBMIT:
       return (
         <input
-          disabled={disabled || isSubmitted}
+          disabled={disabled}
           className="Button"
           type="submit"
           data-testid="button-test-id"
-          value={buttonText}
+          value={children}
           onClick={handleClick}
           title={title}
         />
@@ -49,27 +50,27 @@ const Button = ({ title, onClick, type, disabled, children }) => {
       return (
         <button
           type="button"
-          disabled={disabled || isSubmitted}
+          disabled={disabled}
           className="Button"
           data-testid="button-test-id"
           onClick={handleClick}
           title={title}
         >
-          {buttonText}
+          {children}
         </button>
       );
   }
 };
 
 
-Button.propTypes = {
+ModalButton.propTypes = {
   title: PropTypes.string,
   onClick: PropTypes.func,
   type: PropTypes.number,
   disabled: PropTypes.bool,
   children: PropTypes.node,
 };
-Button.defaultProps = {
+ModalButton.defaultProps = {
   disabled: false,
   onClick: () => null,
   type: BUTTON_TYPES.DEFAULT,
@@ -77,4 +78,4 @@ Button.defaultProps = {
   children: null
 }
 
-export default Button;
+export default ModalButton;
