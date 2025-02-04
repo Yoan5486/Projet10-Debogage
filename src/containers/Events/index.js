@@ -8,7 +8,6 @@ import ModalEvent from "../ModalEvent";
 import "./style.css";
 
 const PER_PAGE = 9;
-
 const EventList = () => {
   const { data, error } = useData();
   const [type, setType] = useState(null);
@@ -50,8 +49,9 @@ const EventList = () => {
         <>
           <h3 className="SelectTitle">Catégories</h3>
           <Select
-            selection={Array.from(typeList)}
-            onChange={(value) => (value ? changeType(value) : changeType(null))}
+         data-testid="select-testid"
+          selection={Array.from(typeList || [])} 
+          onChange={(value) => (value ? changeType(value) : changeType(null))}
           />
           <div id="events" className="ListContainer">
           {lastEvent && (
