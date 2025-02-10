@@ -65,6 +65,7 @@ const EventList = () => {
               />
             )}
             {filteredEvents.map((event) => (
+             
               <Modal key={event.id} Content={<ModalEvent event={event} />}>
                 {({ setIsOpened }) => (
                   <EventCard
